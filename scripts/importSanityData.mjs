@@ -1,11 +1,12 @@
 import { createClient } from '@sanity/client';
+import fetch from 'node-fetch';
 
 const client = createClient({
-    projectId: 'your-project-id',
-    dataset: 'production',
+    projectId: "h7j0dwun",
+    dataset: "production",
     useCdn: true,
     apiVersion: '2025-01-13',
-    token: 'your-auth-token',
+    token: "skMSwCF63jDx9jYUGvBHtHZ8F5EgGuE0unzWe9FtJygd4TQX4PVaooDKgnlfFO6x8F6uq4hh1AQdbHZtQ3QQtz4PH8ZFTvYfp2FUZxoAvF7Q5lahwRb1n3nJilkn2qyIsp5jl5XOXoDbcmLWZ2JqSuyujbQ8W7qU8HC2kMnCRyFmyWSCa4Hw",
 });
 
 async function uploadImageToSanity(imageUrl) {
@@ -34,11 +35,11 @@ async function uploadImageToSanity(imageUrl) {
 
 async function uploadProduct(product) {
     try {
-        imageId = await uploadImageToSanity(product.imageUrl);
+        const imageId = await uploadImageToSanity(product.imageUrl);
 
         if (imageId) {
             const document = {
-                _type: 'product',
+                _type: 'products',
                 name: product.name,
                 description: product.description,
                 price: product.price,
@@ -48,9 +49,10 @@ async function uploadProduct(product) {
                         _ref: imageId,
                     },
                 },
-                category: product.category,
                 discountPercent: product.discountPercent,
                 isNew: product.isNew,
+                colors: product.colors,
+                sizes: product.sizes,
             };
 
             const createdProduct = await client.create(document);
